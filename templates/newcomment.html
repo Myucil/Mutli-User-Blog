@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {{ post.render() | safe }}
+    <div class="post_footer">
+        {{ post.author }}
+    </div>
+    <h2>Comment:</h2>
+    <a href="/blog">Cancel commenting</a>.
+    <br><br>
+    <form method="post">
+        <label>
+            <textarea name="comment" value="{{comment}}"></textarea>
+        </label>
+        <div class="error">{{error}}</div>
+        <input type="submit" value="submit">
+    </form>
+{% endblock %}

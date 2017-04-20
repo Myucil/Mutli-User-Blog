@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% for p in posts %}
+
+ {{ p.render() | safe }}
+
+ <br>
+ <div class="blogExtra">
+
+  Blog by {{ p.author }}
+  <br><br>
+
+  {% if p.likes == 1 %}
+    {{p.likes}} like
+  {% else %}
+    {{p.likes}} likes
+  {% endif %}
+  <br><br>
+  {% if user.name %}
+    <form action='blog/newcomment/{{p.key().id()}}' method='POST'>
+      <input type="submit" value="comment">
+    </form>
+    {% if p.author != user.name %}
+      {% if user.name not in p.liked %}
+        <form action='blog/like/{{p.key().id()}}' method='POST'>
+          <input type="submit" value="like">
+        </form>
+      {% endif %}
+    {% endif %}
+    
+  {% endif %}
+ </div>
+
+ <br><br>
+
+
+ {% for c in comments %}
+    {% if c.cid == p.key().id() %}
+     <div class="commentStyle">
+       <div class="commentAuthor">
+     {{ c.newAuthor }}
+       </div>
+       <div class="commentText">
+        {{ c.render() | safe }}
+       </div>
+     </div>
+       
+          {% if c.newAuthor == user.name %}
+            <form action='blog/editcomment/{{c.key().id()}}' method='POST' class="editBtn">
+              <input type="submit" value="edit comment">
+            </form>
+      
+            <form action='blog/deletecomment/{{c.key().id()}}' method='POST' class="deleteBtn">
+              <input type="submit" value="delete comment">
+            </form>
+          {% endif %}
+      <br><br>
+    {% endif %}
+{% endfor %}
+
+
+  <br>
+
+</div>
+  <br><br>
+{% endfor %}
+
+<a href='/blog/newpost'>New blog</a>
+
+{% endblock %}

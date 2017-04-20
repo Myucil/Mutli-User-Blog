@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {{post.render() | safe}}
+ 
+ <br><br>
+
+  {% if user.name %}
+    {% if post.author == user.name %}
+      <form action="/blog/editpost/{{post.key().id()}}" class="editBtn">
+        <input type="submit" value="EDIT BLOG">
+      </form>
+
+      <form action="/blog/deletepost/{{post.key().id()}}" method="POST" class="deleteBtn">
+        <input type="submit" value="DELETE BLOG">
+      </form>
+      <br>
+    {% endif %}
+  {% endif %}
+
+{% endblock %}
